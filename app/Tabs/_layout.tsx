@@ -26,7 +26,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="calculadora"
         options={{
-          title: "Calculadora",
+          title: "Simulador de Média",
           tabBarIcon: ({ color, size }) => <Ionicons name="calculator" color={color} size={size} />,
         }}
       />

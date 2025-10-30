@@ -1,51 +1,45 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Sistema de Gestão Simples para Universitários
 
-## Get started
+Aplicativo móvel desenvolvido em React Native para universitários, oferecendo uma solução simples de gestão acadêmica. Inclui visualização de calendário acadêmico, calculadora de médias, dashboard personalizado.
 
-1. Install dependencies
+## Funcionalidades
 
-   ```bash
-   npm install
-   ```
+- Dashboard do aluno – visão rápida das atividades e próximos eventos da semana.
+- Calendário acadêmico – consulta de datas importantes, feriados e eventos.
+- Calculadora de médias – cálculo automático das notas por disciplina (AVPs, TDEs, etc.).
+- Autenticação segura – login de alunos com acesso personalizado às funcionalidades.
 
-2. Start the app
+## Tecnologias Utilizadas
 
-   ```bash
-   npx expo start
-   ```
+- **Frontend**: React Native com Expo Router para navegação e Material UI para componentes e padrões visuais.
+- **Backend**: Node.js com banco de dados fake para gerenciamento de usuários e dados acadêmicos.
+- **Testes**: Jest para testes de backend.
+- **Protótipo e Design**: Figma para layout e prototipagem.
+- **Estilização**: baseada em Material UI, adaptada para React Native.
+- **Componentes**: Material UI + ícones do @expo/vector-icons.
+- **Ferramentas de Build/Deploy**: Vercel (frontend) e scripts de Expo para execução em Android, iOS e Web.
+- **Outras bibliotecas importantes**: react-native-calendars, react-native-gesture-handler, react-native-reanimated, expo-image, expo-font e expo-haptics.
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+*⚠️Aviso: o deploy do back-end não foi feito. Para testar as funcionalidades descritas é necessário rodar  o projeto em uma máquina local seguindo as orientações específicas de cada pasta.*
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Padrão de Commits
 
-## Get a fresh project
+Este projeto segue a convenção de commits semânticos (Conventional Commits). Exemplo de mensagens de commit:
 
-When you're ready, run:
+- **feat**: Para novos recursos.
+- **fix**: Para correção de bugs.
+- **docs**: Para alterações na documentação.
+- **style**: Para mudanças de estilo que não afetam a lógica.
+- **refactor**: Para refatorações no código.
+- **test**: Para adicionar ou corrigir testes.
+- **chore**: Para tarefas de manutenção.
 
-```bash
-npm run reset-project
-```
+## Protótipo de Telas ( Figma)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- [Unionline](https://www.figma.com/design/PGBIiEzUYWHXOFDcv8CYxM/Uni-Online---App?node-id=0-1&p=f&t=EYtZWpgoLKvo1VS8-0)
 
-## Learn more
+## Ajuda para rodar o projeto e outras documentações
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# unionline-app
+- [Material UI Documentation](https://mui.com/material-ui/getting-started/)
