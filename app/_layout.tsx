@@ -10,24 +10,26 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="calculadora"
+        options={{
+          title: "Simulador de Média",
+          tabBarIcon: ({ color, size }) => <Ionicons name="calculator" color={color} size={size} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="index"
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
         }}
       />
+
       <Tabs.Screen
         name="calendario"
         options={{
           title: "Calendário",
           tabBarIcon: ({ color, size }) => <Ionicons name="calendar" color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="calculadora"
-        options={{
-          title: "Simulador de Média",
-          tabBarIcon: ({ color, size }) => <Ionicons name="calculator" color={color} size={size} />,
         }}
       />
     </Tabs>

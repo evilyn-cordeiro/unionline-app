@@ -78,9 +78,6 @@ export default function Calculadora({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation?.goBack?.()}>
-          <Ionicons name="arrow-back" size={28} color="#0055ff" />
-        </TouchableOpacity>
         <Text style={styles.title}>Simulador de Média Acadêmica</Text>
         <View style={{ width: 28 }} />
       </View>
@@ -134,7 +131,12 @@ export default function Calculadora({
 
         <View style={styles.newStyle}>
           <Button title="Calcular Média" onPress={calcular} />
-          <Button title="Limpar Campos" onPress={limparCampos} />
+          <Button
+            title="Limpar Campos"
+            onPress={limparCampos}
+            type="outline"
+            color="#ff4d4d"
+          />
         </View>
 
         {media !== null && (
@@ -159,7 +161,7 @@ export default function Calculadora({
 }
 
 const styles = StyleSheet.create({
-  newStyle: { gap: 16},
+  newStyle: { gap: 16 },
   container: {
     flex: 1,
     backgroundColor: "#f4f6fa",
