@@ -5,22 +5,18 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 
 export default function Home({ navigation }: { navigation: NavigationProp<ParamListBase> }) {
   const aluno = {
-    nome: 'Evilyn Cordeiro',
-    curso: 'Sistemas de Informação',
-    foto: 'https://cdn-icons-png.flaticon.com/512/219/219970.png', // exemplo
+    nome: 'Bem-vindo(a), estudante',
+    curso: 'Curso não definido',
+    foto: 'https://cdn-icons-png.flaticon.com/512/219/219970.png', // avatar genérico
   };
 
   const eventosSemana = [
-    { data: 'Seg, 28/10', descricao: 'Aula de Banco de Dados' },
-    { data: 'Ter, 29/10', descricao: 'Trabalho de Engenharia de Software' },
-    { data: 'Qua, 30/10', descricao: 'Prova de Estatística' },
-    { data: 'Sex, 01/11', descricao: 'Feriado - Dia de Todos os Santos' },
+    { data: 'Seg, --/--', descricao: 'Nenhum evento disponível' },
+    { data: 'Ter, --/--', descricao: 'Nenhum evento disponível' },
   ];
+
   const atalhos: { nome: string; icon: ComponentProps<typeof Ionicons>['name']; rota: string }[] = [
-    { nome: 'Calendário', icon: 'calendar', rota: 'Calendario' },
-    { nome: 'Notas', icon: 'stats-chart', rota: 'Notas' },
-    { nome: 'Horários', icon: 'time', rota: 'Horarios' },
-    { nome: 'Perfil', icon: 'person', rota: 'Perfil' },
+    { nome: 'Calendário', icon: 'calendar', rota: 'calendario' },
   ];
 
   return (
@@ -37,7 +33,7 @@ export default function Home({ navigation }: { navigation: NavigationProp<ParamL
 
       {/* Eventos da Semana */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>📅 Esta Semana</Text>
+        <Text style={styles.sectionTitle}>Esta Semana</Text>
         {eventosSemana.map((evento, index) => (
           <View key={index} style={styles.eventItem}>
             <Text style={styles.eventDate}>{evento.data}</Text>
@@ -47,21 +43,23 @@ export default function Home({ navigation }: { navigation: NavigationProp<ParamL
       </View>
 
       {/* Atalhos */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>⚡ Atalhos Rápidos</Text>
-        <View style={styles.shortcutsContainer}>
-          {atalhos.map((atalho, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.shortcut}
-              onPress={() => navigation?.navigate(atalho.rota)}
-            >
-              <Ionicons name={atalho.icon} size={28} color="#0055ff" />
-              <Text style={styles.shortcutText}>{atalho.nome}</Text>
-            </TouchableOpacity>
-          ))}
+      {atalhos.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Atalhos Rápidos</Text>
+          <View style={styles.shortcutsContainer}>
+            {atalhos.map((atalho, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.shortcut}
+                onPress={() => navigation?.navigate(atalho.rota)}
+              >
+                <Ionicons name={atalho.icon} size={28} color="#0055ff" />
+                <Text style={styles.shortcutText}>{atalho.nome}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
     </ScrollView>
   );
 }
