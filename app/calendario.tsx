@@ -1,14 +1,16 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import feriados from "../data/calendario202502.json";
+import { expandDateRanges } from "@/utils/expandRanges";
+import { formatDateBR } from "@/utils/date";
 
 LocaleConfig.locales["pt"] = {
   monthNames: [
@@ -51,123 +53,135 @@ LocaleConfig.locales["pt"] = {
   dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
   today: "Hoje",
 };
+
 LocaleConfig.defaultLocale = "pt";
 
-const expandDateRanges = (events: Record<string, any>) => {
-  const result: Record<string, any> = {};
-  Object.entries(events).forEach(([key, value]) => {
-    if (key.includes(" a ")) {
-      const [start, end] = key.split(" a ").map((d) => d.trim());
-      let current = new Date(start);
-      const last = new Date(end);
-      while (current <= last) {
-        const dateStr = current.toISOString().split("T")[0];
-        result[dateStr] = value;
-        current.setDate(current.getDate() + 1);
-      }
-    } else {
-      result[key] = value;
-    }
-  });
-  return result;
-};
+export default function Calendario() {
+  const today = new Date();
+  const mesAtualInicial = `${today.getFullYear()}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}`;
 
-export default function Calendario({ navigation }: { navigation: any }) {
-  const [currentMonth, setCurrentMonth] = useState("2025-07");
-  const feriadosExpandido = expandDateRanges(feriados);
-  const feriadosDoMes = Object.entries(feriadosExpandido).filter(([date]) =>
-    date.startsWith(currentMonth)
-  );
+  const [currentMonth, setCurrentMonth] = useState(mesAtualInicial);
+  const [loading, setLoading] = useState(true);
+  const [feriadosMes, setFeriadosMes] = useState<any[]>([]);
+  const [markedDates, setMarkedDates] = useState<Record<string, any>>({});
+  const [expandir, setExpandir] = useState(false);
 
-  const feriadosDoMesOrdenados = feriadosDoMes.sort(
-    ([dateA], [dateB]) => new Date(dateA).getTime() - new Date(dateB).getTime()
-  );
+  useEffect(() => {
+    const carregar = async () => {
+      setLoading(true);
 
-  const markedDates = feriadosDoMes.reduce((acc, [date, info]) => {
-    acc[date] = {
-      marked: true,
-      dotColor: info.dotColor,
-      customLabel: info.customLabel,
+      const feriadosExpandidos = expandDateRanges(feriados);
+
+      const filtrados = Object.entries(feriadosExpandidos)
+        .filter(([date]) => date.startsWith(currentMonth))
+        .sort();
+
+      const marcacoes = filtrados.reduce((acc, [date, info]) => {
+        acc[date] = {
+          marked: true,
+          dotColor: info.dotColor,
+          customLabel: info.customLabel,
+        };
+        return acc;
+      }, {} as Record<string, any>);
+
+      setFeriadosMes(filtrados);
+      setMarkedDates(marcacoes);
+
+      setTimeout(() => setLoading(false), 300);
     };
-    return acc;
-  }, {} as Record<string, any>);
+
+    carregar();
+  }, [currentMonth]);
+
+  function agruparEventos() {
+    const grupos: Record<
+      string,
+      { start: string; end: string; dotColor: string }
+    > = {};
+
+    for (const [date, info] of feriadosMes) {
+      const key = info.customLabel;
+
+      if (!grupos[key]) {
+        grupos[key] = { start: date, end: date, dotColor: info.dotColor };
+      } else {
+        grupos[key].end = date;
+      }
+    }
+
+    return Object.entries(grupos);
+  }
+
+  const legendasAgrupadas = agruparEventos();
+
+  const itensVisiveis = expandir ? legendasAgrupadas : legendasAgrupadas.slice(0, 3);
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Calendário Acadêmico</Text>
-        <View style={{ width: 28 }} />
-      </View>
+      <Text style={styles.title}>Calendário Acadêmico</Text>
 
-      <Calendar
-        onDayPress={(day) => console.log("Dia selecionado:", day)}
-        markedDates={markedDates}
-        onMonthChange={(month) =>
-          setCurrentMonth(
-            `${month.year}-${month.month.toString().padStart(2, "0")}`
-          )
-        }
-        monthFormat={"MMMM yyyy"}
-        theme={{
-          todayTextColor: "#0055ff",
-          arrowColor: "#0055ff",
-          dotColor: "#0055ff",
-          selectedDayBackgroundColor: "#0055ff",
-        }}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="#0055ff" style={{ marginTop: 30 }} />
+      ) : (
+        <Calendar
+          markedDates={markedDates}
+          monthFormat={"MMMM"}
+          onMonthChange={(month) =>
+            setCurrentMonth(
+              `${month.year}-${String(month.month).padStart(2, "0")}`
+            )
+          }
+        />
+      )}
 
-      <View style={styles.legendContainer}>
-        <Text style={styles.legendTitle}>Legenda de Eventos</Text>
-        {feriadosDoMesOrdenados.map(([date, info]) => {
-          const d = new Date(date);
-          const fullDateFormatted = `${d
-            .getDate()
-            .toString()
-            .padStart(2, "0")}/${(d.getMonth() + 1)
-            .toString()
-            .padStart(2, "0")}/${d.getFullYear()}`;
-          return (
-            <View key={date} style={styles.legendItem}>
-              <View style={[styles.dot, { backgroundColor: info.dotColor }]} />
+      {!loading && (
+        <View style={styles.legendContainer}>
+          <Text style={styles.legendTitle}>Legenda de Eventos</Text>
+
+          {itensVisiveis.map(([label, { start, end, dotColor }]) => (
+            <View key={label} style={styles.legendItem}>
+              <View style={[styles.dot, { backgroundColor: dotColor }]} />
               <Text style={styles.legendText}>
-                {info.customLabel} ({fullDateFormatted})
+                {label} —{" "}
+                {start === end
+                  ? formatDateBR(start)
+                  : `${formatDateBR(start)} a ${formatDateBR(end)}`}
               </Text>
             </View>
-          );
-        })}
-      </View>
+          ))}
+
+          {legendasAgrupadas.length > 3 && (
+            <TouchableOpacity onPress={() => setExpandir(!expandir)}>
+              <Text style={styles.toggleButton}>
+                {expandir ? "Ver menos" : "Ver mais"}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 16,
-    paddingTop: 40,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#0055ff",
-    textAlign: "center",
-    flex: 1,
-  },
-  legendContainer: { marginTop: 20 },
-  legendTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 10,
-    color: "#333",
-  },
+  container: { flex: 1, backgroundColor: "#fff", padding: 16, marginTop: 50 },
+  title: { fontSize: 20, fontWeight: "600", marginBottom: 16 },
+
+  legendContainer: { marginTop: 20, marginBottom: 30 },
+  legendTitle: { fontSize: 18, fontWeight: "700", marginBottom: 10 },
+
   legendItem: { flexDirection: "row", alignItems: "center", marginBottom: 6 },
   dot: { width: 12, height: 12, borderRadius: 6, marginRight: 8 },
-  legendText: { fontSize: 14, color: "#555" },
+  legendText: { fontSize: 14, width: "90%" },
+
+  toggleButton: {
+    marginTop: 10,
+    color: "#0055ff",
+    fontWeight: "600",
+    paddingVertical: 6,
+    textDecorationLine: "underline",
+  },
 });

@@ -1,12 +1,10 @@
 import Button from "@/components/button";
-import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
   Image,
 } from "react-native";
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f4f6fa",
     paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingTop: 80,
   },
   header: {
     flexDirection: "row",
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: "500",
     color: "#0055ff",
     textAlign: "center",
   },

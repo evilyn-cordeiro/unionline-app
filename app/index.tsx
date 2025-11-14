@@ -32,6 +32,10 @@ export default function Home({
     primeiroDiaSemana.setDate(hoje.getDate() - hoje.getDay() + 1);
     const ultimoDiaSemana = new Date(primeiroDiaSemana);
     ultimoDiaSemana.setDate(primeiroDiaSemana.getDate() + 6);
+    const criarDataLocal = (dataStr: string) => {
+      const [ano, mes, dia] = dataStr.split("-").map(Number);
+      return new Date(ano, mes - 1, dia);
+    };
 
     return Object.entries(calendario202502)
       .map(([data, info]) => ({
@@ -39,7 +43,7 @@ export default function Home({
         descricao: info.customLabel,
       }))
       .filter(({ data }) => {
-        const dataEvento = new Date(data);
+        const dataEvento = criarDataLocal(data);
         return dataEvento >= primeiroDiaSemana && dataEvento <= ultimoDiaSemana;
       });
   };

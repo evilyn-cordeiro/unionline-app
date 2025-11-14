@@ -8,19 +8,15 @@ Aplicativo móvel desenvolvido em React Native para universitários, oferecendo 
 - Dashboard do aluno – visão rápida das atividades e próximos eventos da semana.
 - Calendário acadêmico – consulta de datas importantes, feriados e eventos.
 - Calculadora de médias – cálculo automático das notas por disciplina (AVPs, TDEs, etc.).
-- Autenticação segura – login de alunos com acesso personalizado às funcionalidades.
 
 ## Tecnologias Utilizadas
 
 - **Frontend**: React Native com Expo Router para navegação e Material UI para componentes e padrões visuais.
-- **Backend**: Node.js com banco de dados fake para gerenciamento de usuários e dados acadêmicos.
-- **Testes**: Jest para testes de backend.
 - **Protótipo e Design**: Figma para layout e prototipagem.
 - **Estilização**: baseada em Material UI, adaptada para React Native.
 - **Componentes**: Material UI + ícones do @expo/vector-icons.
 - **Ferramentas de Build/Deploy**: Vercel (frontend) e scripts de Expo para execução em Android, iOS e Web.
 - **Outras bibliotecas importantes**: react-native-calendars, react-native-gesture-handler, react-native-reanimated, expo-image, expo-font e expo-haptics.
-
 
 *⚠️Aviso: o deploy do back-end não foi feito. Para testar as funcionalidades descritas é necessário rodar  o projeto em uma máquina local seguindo as orientações específicas de cada pasta.*
 
