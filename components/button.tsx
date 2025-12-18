@@ -3,8 +3,8 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 interface Props {
   title: string;
   onPress: () => void;
-  type?: "default" | "outline"; // define estilo
-  color?: string; // cor opcional
+  type?: "default" | "outline";
+  color?: string;
 }
 
 export default function Button({ title, onPress, type = "default", color }: Props) {
